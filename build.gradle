@@ -21,7 +21,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-	implementation group: 'io.github.resilience4j', name: 'resilience4j-spring-boot2', version: '1.6.1'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	
+	//Don't give specific version, otherwise you will be facing "method not found" error on startup of application.
+	//Also don't forget to add its dependencies i.e. spring-boot-starter-actuator and spring-boot-starter-aop
+	implementation 'io.github.resilience4j:resilience4j-spring-boot2' 
+	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
