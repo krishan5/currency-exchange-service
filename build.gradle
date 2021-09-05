@@ -25,7 +25,19 @@ dependencies {
 	
 	//Don't give specific version, otherwise you will be facing "method not found" error on startup of application.
 	//Also don't forget to add its dependencies i.e. spring-boot-starter-actuator and spring-boot-starter-aop
-	implementation 'io.github.resilience4j:resilience4j-spring-boot2' 
+	implementation 'io.github.resilience4j:resilience4j-spring-boot2'
+	
+	/**Distributed tracing server**/
+	//Don't forgot to run openzipkin/zipkin docker image using command :
+	//docker run -d -p 9411:9411 openzipkin/zipkin
+	//This will download zipkin (if not available in your system)
+	//We can setup spring boot application and add zipkin dependencies to make it distributed tracing server
+	//but its better to directly use the zipkin image which is available in Docker hub.
+	/**Sleuth is framework to assign unique ID to each of the request i.e. tracing id**/
+	implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'org.springframework.cloud:spring-cloud-sleuth-zipkin' //Zipkin specific dependency
+	/**Rabbit MQ will be used when Zipkin gets down, then all the tracing keep maintained by it.**/
+	implementation 'org.springframework.amqp:spring-rabbit'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

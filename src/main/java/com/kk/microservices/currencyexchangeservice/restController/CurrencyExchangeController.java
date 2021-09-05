@@ -2,6 +2,8 @@ package com.kk.microservices.currencyexchangeservice.restController;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +30,18 @@ public class CurrencyExchangeController {
 	@Autowired
 	private Environment environment;
 	
+	private Logger logger = LoggerFactory.getLogger(CurrencyExchangeController.class);
+	
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	public CurrencyExchange retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
+		/**
+		 * When zipkin distribution server is running and client make any request to this url then tracing ID 
+		 * get attached to logged text in following way :
+		 * 2021-09-05 13:57:07.655  INFO [currency-exchange-service,3bcd7d9e172350e5,3bcd7d9e172350e5] 2212 --- [nio-8000-exec-1] c.k.m.c.r.CurrencyExchangeController     : retrieveExchangeValue() called with a to b
+		 * where 3bcd7d9e172350e5,3bcd7d9e172350e5 is tracing ID
+		 */
+		logger.info("retrieveExchangeValue() called with {} to {}", from, to);
+		
 		CurrencyExchange currencyExchange = new CurrencyExchange(1000L, from, to, BigDecimal.valueOf(50));
 		currencyExchange.setEnvironment( environment.getProperty("local.server.port") );
 		return currencyExchange;
